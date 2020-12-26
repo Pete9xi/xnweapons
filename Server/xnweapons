@@ -1,0 +1,18 @@
+ESX               = nil
+TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+ESX.RegisterServerCallback('xnweapons:getPlayerMoney', function(source, cb)
+local xPlayer  = ESX.GetPlayerFromId(source)
+local XPlayerMoney = xPlayer.get('money')
+
+	cb(XPlayerMoney)
+end)
+
+RegisterServerEvent('xnweapons:buyItem')
+AddEventHandler('xnweapons:buyItem', function(itemName, price)
+
+	local _source = source
+	local xPlayer  = ESX.GetPlayerFromId(source)
+	xPlayer.removeMoney(price)
+		TriggerClientEvent('esx:showNotification',_source, ('purchased') .. itemName)
+
+	end)
