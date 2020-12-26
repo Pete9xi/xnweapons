@@ -1,3 +1,29 @@
+ESX                           = nil
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+end)
+--Setup Blips
+Citizen.CreateThread(function()
+	for k,v in pairs(Config.Zones) do
+			for i = 1, #v.Locations, 1 do
+				local blip = AddBlipForCoord(v.Locations[i])
+
+				SetBlipSprite (blip, 110)
+				SetBlipDisplay(blip, 4)
+				SetBlipScale  (blip, 0.7)
+				SetBlipColour (blip, 81)
+				SetBlipAsShortRange(blip, true)
+
+				BeginTextCommandSetBlipName("STRING")
+				AddTextComponentSubstringPlayerName(('Ammu-Nation'))
+				EndTextCommandSetBlipName(blip)
+			end
+	end
+end)
+
 local xnWeapons = xnWeapons or {
     interiorIDs = {
         [153857] = true,
@@ -37,516 +63,519 @@ end
 local globalWeaponTable = {
     {
         name = "Melee",
-        { 'WEAPON_KNUCKLE', 'Knuckle Dusters' },
-        { 'WEAPON_SWITCHBLADE', 'Switchblade' },
-        { 'WEAPON_KNIFE', 'Knife' },
-        { 'WEAPON_NIGHTSTICK', 'Nightstick' },
-        { 'WEAPON_HAMMER', 'Hammer' },
-        { 'WEAPON_BAT', 'Katana' },
-        { 'WEAPON_GOLFCLUB', 'Golf Club' },
-        { 'WEAPON_CROWBAR', 'Knife' },
-        { 'WEAPON_HATCHET', 'Hatchet' },
-        { 'WEAPON_POOLCUE', 'Pool Cue' },
-        { 'WEAPON_WRENCH', 'Wrench' },
-        { 'WEAPON_FLASHLIGHT', 'Flashlight' },
-        { 'WEAPON_BOTTLE', 'Broken Bottle' },
-        { 'WEAPON_DAGGER', 'Bowie Knife' },
-        { 'WEAPON_MACHETE', 'Machete' },
-        { 'WEAPON_BATTLEAXE', 'Battle Axe' },
-        { 'WEAPON_BALL', 'Baseball' },
-        { 'WEAPON_SNOWBALL', 'Snowball' },
+        { 'WEAPON_KNUCKLE', 'Knuckle Dusters','100' },
+        { 'WEAPON_SWITCHBLADE', 'Switchblade','90' },
+        { 'WEAPON_KNIFE', 'Knife','30' },
+        { 'WEAPON_NIGHTSTICK', 'Nightstick','50' },
+        { 'WEAPON_HAMMER', 'Hammer','9' },
+        { 'WEAPON_BAT', 'Katana','10' },
+        { 'WEAPON_GOLFCLUB', 'Golf Club','0' },
+        { 'WEAPON_CROWBAR', 'Crow Bar','20' },
+        { 'WEAPON_HATCHET', 'Hatchet','30' },
+        { 'WEAPON_POOLCUE', 'Pool Cue','0' },
+        { 'WEAPON_WRENCH', 'Wrench','4' },
+        { 'WEAPON_FLASHLIGHT', 'Flashlight','10' },
+        { 'WEAPON_BOTTLE', 'Broken Bottle','0' },
+        { 'WEAPON_DAGGER', 'Bowie Knife','25' },
+        { 'WEAPON_MACHETE', 'Machete','50' },
+        { 'WEAPON_BATTLEAXE', 'Battle Axe','39' },
+        { 'WEAPON_BALL', 'Baseball','5' },
+        { 'WEAPON_SNOWBALL', 'Snowball','0' },
     },
     {
         name = "Pistols",
-        { 'WEAPON_PISTOL', 'Pistol' },
-        { 'WEAPON_PISTOL_MK2', 'Pistol MKII' },
-        { 'WEAPON_COMBATPISTOL', 'Combat Pistol' },
-        { 'WEAPON_MACHINEPISTOL', 'Machine Pistol' },
-        { 'WEAPON_APPISTOL', 'Automatic Pistol' },
-        { 'WEAPON_PISTOL50', 'Pistol .50' },
-        { 'WEAPON_REVOLVER', 'Revolver' },
-        { 'WEAPON_REVOLVER_MK2', 'Revolver MKII' },
-        { 'WEAPON_VINTAGEPISTOL', 'Vintage Pistol' },
-        { 'WEAPON_SNSPISTOL', 'SNS Pistol' },
-        { 'WEAPON_SNSPISTOL_MK2', 'SNS Pistol MKII' },
-        { 'WEAPON_MARKSMANPISTOL', 'Marksman Pistol' },
-        { 'WEAPON_HEAVYPISTOL', 'Heavy Pistol' },
-        { 'WEAPON_FLAREGUN', 'Flare Gun' },
-        { 'WEAPON_STUNGUN', 'Taser' },
-        { 'WEAPON_DOUBLEACTION', 'Double-Action Revolver' },
+        { 'WEAPON_PISTOL', 'Pistol','250' },
+        { 'WEAPON_PISTOL_MK2', 'Pistol MKII','2500' },
+        { 'WEAPON_COMBATPISTOL', 'Combat Pistol','320' },
+        { 'WEAPON_MACHINEPISTOL', 'Machine Pistol','650' },
+        { 'WEAPON_APPISTOL', 'Automatic Pistol','500' },
+        { 'WEAPON_PISTOL50', 'Pistol .50','390' },
+        { 'WEAPON_REVOLVER', 'Revolver','590' },
+        { 'WEAPON_REVOLVER_MK2', 'Revolver MKII','2590' },
+        { 'WEAPON_VINTAGEPISTOL', 'Vintage Pistol','450' },
+        { 'WEAPON_SNSPISTOL', 'SNS Pistol','575' },
+        { 'WEAPON_SNSPISTOL_MK2', 'SNS Pistol MKII','1575' },
+        { 'WEAPON_MARKSMANPISTOL', 'Marksman Pistol','350' },
+        { 'WEAPON_HEAVYPISTOL', 'Heavy Pistol','750' },
+        { 'WEAPON_FLAREGUN', 'Flare Gun','150' },
+        { 'WEAPON_STUNGUN', 'Taser','250' },
+        { 'WEAPON_DOUBLEACTION', 'Double-Action Revolver','2999' },
     },
     {
         name = "SMGs",
-        { 'WEAPON_MICROSMG', 'Micro SMG' },
-        { 'WEAPON_SMG', 'SMG' },
-        { 'WEAPON_SMG_MK2', 'SMG MKII' },
-        { 'WEAPON_ASSAULTSMG', 'Assault SMG' },
-        { 'WEAPON_MINISMG', 'Mini SMG' },
-        { 'WEAPON_COMBATPDW', 'Combat PDW' },
+        { 'WEAPON_MICROSMG', 'Micro SMG','500' },
+        { 'WEAPON_SMG', 'SMG','750' },
+        { 'WEAPON_SMG_MK2', 'SMG MKII','1750' },
+        { 'WEAPON_ASSAULTSMG', 'Assault SMG','1200' },
+        { 'WEAPON_MINISMG', 'Mini SMG','900' },
+        { 'WEAPON_COMBATPDW', 'Combat PDW','1720' },
     },
     {
         name = "MGs",
-        { 'WEAPON_MG', 'MG' },
-        { 'WEAPON_COMBATMG', 'Combat MG' },
-        { 'WEAPON_COMBATMG_MK2', 'Combat MG MKII' },
-        { 'WEAPON_GUSENBERG', 'Gusenberg' },
+        { 'WEAPON_MG', 'MG','3500' },
+        { 'WEAPON_COMBATMG', 'Combat MG','4800' },
+        { 'WEAPON_COMBATMG_MK2', 'Combat MG MKII','9000' },
+        { 'WEAPON_GUSENBERG', 'Gusenberg','4600' },
     },
     {
         name = "Shotguns",
-        { 'WEAPON_PUMPSHOTGUN', 'Pump Shotgun' },
-        { 'WEAPON_PUMPSHOTGUN_MK2', 'Pump Shotgun MKII' },
-        { 'WEAPON_HEAVYSHOTGUN', 'Heavy Shotgun' },
-        { 'WEAPON_SAWNOFFSHOTGUN', 'Sawn-off Shotgun' },
-        { 'WEAPON_ASSAULTSHOTGUN', 'Assault Shotgun' },
-        { 'WEAPON_BULLPUPSHOTGUN', 'Bullpup Shotgun' },
-        { 'WEAPON_AUTOSHOTGUN', 'Sweeper' },
-        { 'WEAPON_DBSHOTGUN', 'Double-Barreled Shotgun' },
-        { 'WEAPON_MUSKET', 'Musket' },
+        { 'WEAPON_PUMPSHOTGUN', 'Pump Shotgun','1500' },
+        { 'WEAPON_PUMPSHOTGUN_MK2', 'Pump Shotgun MKII','2500' },
+        { 'WEAPON_HEAVYSHOTGUN', 'Heavy Shotgun','3509' },
+        { 'WEAPON_SAWNOFFSHOTGUN', 'Sawn-off Shotgun','500' },
+        { 'WEAPON_ASSAULTSHOTGUN', 'Assault Shotgun','2000' },
+        { 'WEAPON_BULLPUPSHOTGUN', 'Bullpup Shotgun','1000' },
+        { 'WEAPON_AUTOSHOTGUN', 'Sweeper','3000' },
+        { 'WEAPON_DBSHOTGUN', 'Double-Barreled Shotgun','1590' },
+        { 'WEAPON_MUSKET', 'Musket','1000' },
     },
     {
         name = "Assault Rifles",
-        { 'WEAPON_ASSAULTRIFLE', 'Assault Rifle' },
-        { 'WEAPON_ASSAULTRIFLE_MK2', 'Assault Rifle MKII' },
-        { 'WEAPON_CARBINERIFLE', 'Carbine Rifle' },
-        { 'WEAPON_CARBINERIFLE_MK2', 'Carbine Rifle MKII' },
-        { 'WEAPON_ADVANCEDRIFLE', 'Advanced Rifle' },
-        { 'WEAPON_COMPACTRIFLE', 'Compact Rifle' },
-        { 'WEAPON_SPECIALCARBINE', 'Special Carbine' },
-        { 'WEAPON_SPECIALCARBINE_MK2', 'Special Carbine MKII' },
-        { 'WEAPON_BULLPUPRIFLE', 'Bullpup Rifle' },
-        { 'WEAPON_BULLPUPRIFLE_MK2', 'Bullpup Rifle MKII' },
+        { 'WEAPON_ASSAULTRIFLE', 'Assault Rifle','1000' },
+        { 'WEAPON_ASSAULTRIFLE_MK2', 'Assault Rifle MKII','2500' },
+        { 'WEAPON_CARBINERIFLE', 'Carbine Rifle','3000' },
+        { 'WEAPON_CARBINERIFLE_MK2', 'Carbine Rifle MKII','4000' },
+        { 'WEAPON_ADVANCEDRIFLE', 'Advanced Rifle','4250' },
+        { 'WEAPON_COMPACTRIFLE', 'Compact Rifle','4650' },
+        { 'WEAPON_SPECIALCARBINE', 'Special Carbine','4750' },
+        { 'WEAPON_SPECIALCARBINE_MK2', 'Special Carbine MKII','8750' },
+        { 'WEAPON_BULLPUPRIFLE', 'Bullpup Rifle','4500' },
+        { 'WEAPON_BULLPUPRIFLE_MK2', 'Bullpup Rifle MKII','5000' },
     },
     {
         name = "Sniper Rifles",
-        { 'WEAPON_SNIPERRIFLE', 'Sniper Rifle' },
-        { 'WEAPON_HEAVYSNIPER', 'Heavy Sniper Rifle' },
-        { 'WEAPON_HEAVYSNIPER_MK2', 'Heavy Sniper Rifle MKII' },
-        { 'WEAPON_MARKSMANRIFLE', 'Marksman Rifle' },
-        { 'WEAPON_MARKSMANRIFLE_MK2', 'Marksman Rifle MKII' },
+        { 'WEAPON_SNIPERRIFLE', 'Sniper Rifle','2000' },
+        { 'WEAPON_HEAVYSNIPER', 'Heavy Sniper Rifle','2990' },
+        { 'WEAPON_HEAVYSNIPER_MK2', 'Heavy Sniper Rifle MKII','3900' },
+        { 'WEAPON_MARKSMANRIFLE', 'Marksman Rifle','5750' },
+        { 'WEAPON_MARKSMANRIFLE_MK2', 'Marksman Rifle MKII','6750' },
     },
     {
         name = "Special Weapons",
-        { 'WEAPON_COMPACTLAUNCHER', 'Compact Grenade Launcher' },
-        { 'WEAPON_GRENADELAUNCHER', 'Grenade Launcher' },
-        { 'WEAPON_RPG', 'RPG' },
-        { 'WEAPON_HOMINGLAUNCHER', 'Homing Launcher' },
-        { 'WEAPON_MINIGUN', 'Minigun' },
-        { 'WEAPON_RAILGUN', 'Railgun' },
+        { 'WEAPON_COMPACTLAUNCHER', 'Compact Grenade Launcher','3000' },
+        { 'WEAPON_GRENADELAUNCHER', 'Grenade Launcher','2500' },
+        { 'WEAPON_RPG', 'RPG','2580' },
+        { 'WEAPON_HOMINGLAUNCHER', 'Homing Launcher','5000' },
+        { 'WEAPON_MINIGUN', 'Minigun','7000' },
+        { 'WEAPON_RAILGUN', 'Railgun','10000' },
+		{ 'WEAPON_RAYMINIGUN', 'Widowmaker','100000' },
+		{ 'WEAPON_RAYCARBINE', 'Un Holy Hailbringer','120000' },
+		
     },
     {
         name = "Throwables",
-        { 'WEAPON_GRENADE', 'Frag Grenade', {noTint = true} },
-        { 'WEAPON_STICKYBOMB', 'Sticky Bombs', {noTint = true} },
-        { 'WEAPON_SMOKEGRENADE', 'Smoke Grenade', {noTint = true} },
-        { 'WEAPON_BZGAS', 'BZ Gas', {noTint = true} },
-        { 'WEAPON_MOLOTOV', 'Molotov Cocktail', {noTint = true} },
-        { 'WEAPON_PIPEBOMB', 'Pipebomb', {noTint = true} },
-        { 'WEAPON_PROXMINE', 'Proximity Mine', {noTint = true} },
+        { 'WEAPON_GRENADE', 'Frag Grenade', {noTint = true},'250' },
+        { 'WEAPON_STICKYBOMB', 'Sticky Bombs', {noTint = true},'600' },
+        { 'WEAPON_SMOKEGRENADE', 'Smoke Grenade', {noTint = true},'500' },
+        { 'WEAPON_BZGAS', 'BZ Gas', {noTint = true},'300' },
+        { 'WEAPON_MOLOTOV', 'Molotov Cocktail', {noTint = true},'150' },
+        { 'WEAPON_PIPEBOMB', 'Pipebomb', {noTint = true},'500' },
+        { 'WEAPON_PROXMINE', 'Proximity Mine', {noTint = true},'750' },
     },
     {
         name = "Accessories",
-        { 'WEAPON_FIREEXTINGUISHER', 'Fire Extinguisher', {noAmmo = true, noTint = true} },
-        { 'WEAPON_FIREWORK', 'Firework Launcher', {noTint = true} },
-        { 'WEAPON_PETROLCAN', 'Jerry Can', {noTint = true} },
-		{ 'WEAPON_FLARE', 'Flare', {noTint = true} },
-		{ 'GADGET_PARACHUTE', 'Parachute', {noPreview = true, noTint = true, noAmmo = true} },
+        { 'WEAPON_FIREEXTINGUISHER', 'Fire Extinguisher', {noAmmo = true, noTint = true},'100' },
+        { 'WEAPON_FIREWORK', 'Firework Launcher', {noTint = true},'200' },
+        { 'WEAPON_PETROLCAN', 'Jerry Can', {noTint = true},'50' },
+		{ 'WEAPON_FLARE', 'Flare', {noTint = true},'90' },
+		{ 'GADGET_PARACHUTE', 'Parachute', {noPreview = true, noTint = true, noAmmo = true},'500' },
     },
 }
 local globalAttachmentTable = {  
 	-- Putting these at the top makes them work properly as they need to be applied to the weapon first before other attachments
-	{ "COMPONENT_ADVANCEDRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_CARBINERIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_ASSAULTRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_MICROSMG_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_SAWNOFFSHOTGUN_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_SNIPERRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_PISTOL_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_PISTOL50_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_APPISTOL_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_SMG_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
-	{ "COMPONENT_MARKSMANRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish" },
+	{ "COMPONENT_ADVANCEDRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_CARBINERIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_ASSAULTRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_MICROSMG_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_SAWNOFFSHOTGUN_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_SNIPERRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_PISTOL_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_PISTOL50_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_APPISTOL_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_SMG_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
+	{ "COMPONENT_MARKSMANRIFLE_VARMOD_LUXE", "Yusuf Amir Luxury Finish",'150' },
 
-	{ "COMPONENT_COMBATPISTOL_VARMOD_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_SPECIALCARBINE_VARMOD_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_SNSPISTOL_VARMOD_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_MG_COMBATMG_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_BULLPUPRIFLE_VARMOD_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_MG_VARMOD_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_ASSAULTSMG_VARMOD_LOWRIDER", "Lowrider Finish" },
-	{ "COMPONENT_PUMPSHOTGUN_VARMOD_LOWRIDER", "Lowrider Finish" },
+	{ "COMPONENT_COMBATPISTOL_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_SPECIALCARBINE_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_SNSPISTOL_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_MG_COMBATMG_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_BULLPUPRIFLE_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_MG_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_ASSAULTSMG_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
+	{ "COMPONENT_PUMPSHOTGUN_VARMOD_LOWRIDER", "Lowrider Finish",'150' },
 
-	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_COMBATMG_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_SMG_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_PISTOL_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_PISTOL_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_ASSAULTSHOTGUN_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_HEAVYSHOTGUN_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_PISTOL50_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_COMBATPISTOL_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_APPISTOL_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_COMBATPDW_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_SNSPISTOL_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_SNSPISTOL_MK2_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_ASSAULTRIFLE_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_COMBATMG_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_MG_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_ASSAULTSMG_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_GUSENBERG_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_MICROSMG_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_BULLPUPRIFLE_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_COMPACTRIFLE_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_HEAVYPISTOL_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_VINTAGEPISTOL_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_CARBINERIFLE_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_ADVANCEDRIFLE_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_MARKSMANRIFLE_CLIP_02", "Extended Magazine" },
-	{ "COMPONENT_SMG_CLIP_02", "Extended Magazine" },
+	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_02", "Extended Magazine",'200'},
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_COMBATMG_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_SMG_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_PISTOL_MK2_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_PISTOL_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_ASSAULTSHOTGUN_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_HEAVYSHOTGUN_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_PISTOL50_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_COMBATPISTOL_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_APPISTOL_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_COMBATPDW_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_SNSPISTOL_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_SNSPISTOL_MK2_CLIP_02", "Extended Magazine",'200'},
+	{ "COMPONENT_ASSAULTRIFLE_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_COMBATMG_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_MG_CLIP_02", "Extended Magazine",'200'},
+	{ "COMPONENT_ASSAULTSMG_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_GUSENBERG_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_MICROSMG_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_BULLPUPRIFLE_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_COMPACTRIFLE_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_HEAVYPISTOL_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_VINTAGEPISTOL_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_CARBINERIFLE_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_ADVANCEDRIFLE_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_MARKSMANRIFLE_CLIP_02", "Extended Magazine",'200' },
+	{ "COMPONENT_SMG_CLIP_02", "Extended Magazine",'200' },
 	{ "COMPONENT_SPECIALCARBINE_CLIP_02", "Extended Magazine" },
 
-	{ "COMPONENT_SPECIALCARBINE_CLIP_03", "Drum Magazine" },
-	{ "COMPONENT_COMPACTRIFLE_CLIP_03", "Drum Magazine" },
-	{ "COMPONENT_COMBATPDW_CLIP_03", "Drum Magazine" },
-	{ "COMPONENT_ASSAULTRIFLE_CLIP_03", "Drum Magazine" },
-	{ "COMPONENT_HEAVYSHOTGUN_CLIP_03", "Drum Magazine" },
-	{ "COMPONENT_CARBINERIFLE_CLIP_03", "Drum Magazine" },
-	{ "COMPONENT_SMG_CLIP_03", "Drum Magazine" },
+	{ "COMPONENT_SPECIALCARBINE_CLIP_03", "Drum Magazine",'200' },
+	{ "COMPONENT_COMPACTRIFLE_CLIP_03", "Drum Magazine" ,'200'},
+	{ "COMPONENT_COMBATPDW_CLIP_03", "Drum Magazine",'200' },
+	{ "COMPONENT_ASSAULTRIFLE_CLIP_03", "Drum Magazine",'200' },
+	{ "COMPONENT_HEAVYSHOTGUN_CLIP_03", "Drum Magazine",'200' },
+	{ "COMPONENT_CARBINERIFLE_CLIP_03", "Drum Magazine",'200' },
+	{ "COMPONENT_SMG_CLIP_03", "Drum Magazine",'200' },
 
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'350' },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'350' },
+	{ "COMPONENT_MARKSMANRIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'350' },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_PISTOL_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_PISTOL_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_PISTOL_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_PISTOL_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_PISTOL_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_PISTOL_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_PISTOL_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'350' },
+	{ "COMPONENT_PISTOL_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_HOLLOWPOINT", "Hollowpoint Rounds" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_EXPLOSIVE", "Explosive Rounds" },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_HOLLOWPOINT", "Hollowpoint Rounds",'350' },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CLIP_EXPLOSIVE", "Explosive Rounds",'400' },
 
-	{ "COMPONENT_SNSPISTOL_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_SNSPISTOL_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_SNSPISTOL_MK2_CLIP_HOLLOWPOINT", "Hollowpoint Rounds" },
-	{ "COMPONENT_SNSPISTOL_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_SNSPISTOL_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_SNSPISTOL_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_SNSPISTOL_MK2_CLIP_HOLLOWPOINT", "Hollowpoint Rounds",'350' },
+	{ "COMPONENT_SNSPISTOL_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_REVOLVER_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_REVOLVER_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_REVOLVER_MK2_CLIP_HOLLOWPOINT", "Hollowpoint Rounds" },
-	{ "COMPONENT_REVOLVER_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_REVOLVER_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_REVOLVER_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_REVOLVER_MK2_CLIP_HOLLOWPOINT", "Hollowpoint Rounds",'350' },
+	{ "COMPONENT_REVOLVER_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_SMG_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_SMG_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_SMG_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_SMG_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_SMG_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_SMG_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_SMG_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'350' },
+	{ "COMPONENT_SMG_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_COMBATMG_MK2_CLIP_TRACER", "Tracer Rounds" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_TRACER", "Tracer Rounds" },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_TRACER", "Tracer Rounds",'300' },
+	{ "COMPONENT_COMBATMG_MK2_CLIP_TRACER", "Tracer Rounds",'350' },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_TRACER", "Tracer Rounds",'400' },
 
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_COMBATMG_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_INCENDIARY", "Incendiary Rounds" },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'300' },
+	{ "COMPONENT_COMBATMG_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'350' },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_INCENDIARY", "Incendiary Rounds",'400' },
 
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
-	{ "COMPONENT_COMBATMG_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds" },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'300' },
+	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'300' },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'350' },
+	{ "COMPONENT_COMBATMG_MK2_CLIP_ARMORPIERCING", "Armor Piercing Rounds",'400' },
 
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
-	{ "COMPONENT_COMBATMG_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_FMJ", "Full Metal Jacket Rounds" },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'300' },
+	{ "COMPONENT_CARBINERIFLE_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'300' },
+	{ "COMPONENT_COMBATMG_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'350' },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_FMJ", "Full Metal Jacket Rounds",'400' },
 
-	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_EXPLOSIVE", "Explosive Rounds" },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CLIP_EXPLOSIVE", "Explosive Rounds",'450' },
 
-	{ "COMPONENT_AT_PI_FLSH_02", "Flashlight" },
-	{ "COMPONENT_AT_AR_FLSH	", "Flashlight" },
-	{ "COMPONENT_AT_PI_FLSH", "Flashlight" },
-	{ "COMPONENT_AT_AR_FLSH", "Flashlight" },
-	{ "COMPONENT_AT_PI_FLSH_03", "Flashlight" },
+	{ "COMPONENT_AT_PI_FLSH_02", "Flashlight",'50' },
+	{ "COMPONENT_AT_AR_FLSH	", "Flashlight",'50' },
+	{ "COMPONENT_AT_PI_FLSH", "Flashlight",'50' },
+	{ "COMPONENT_AT_AR_FLSH", "Flashlight",'50' },
+	{ "COMPONENT_AT_PI_FLSH_03", "Flashlight",'50' },
 
-	{ "COMPONENT_AT_PI_SUPP", "Suppressor" },
-	{ "COMPONENT_AT_PI_SUPP_02", "Suppressor" },
-	{ "COMPONENT_AT_AR_SUPP", "Suppressor" },
-	{ "COMPONENT_AT_AR_SUPP_02", "Suppressor" },
-	{ "COMPONENT_AT_SR_SUPP", "Suppressor" },
-	{ "COMPONENT_AT_SR_SUPP_03", "Suppressor" },
+	{ "COMPONENT_AT_PI_SUPP", "Suppressor", '400' },
+	{ "COMPONENT_AT_PI_SUPP_02", "Suppressor", '400' },
+	{ "COMPONENT_AT_AR_SUPP", "Suppressor", '400' },
+	{ "COMPONENT_AT_AR_SUPP_02", "Suppressor", '400' },
+	{ "COMPONENT_AT_SR_SUPP", "Suppressor", '400' },
+	{ "COMPONENT_AT_SR_SUPP_03", "Suppressor", '400' },
 
-	{ "COMPONENT_AT_PI_COMP", "Compensator" },
-	{ "COMPONENT_AT_PI_COMP_02", "Compensator" },
-	{ "COMPONENT_AT_PI_COMP_03", "Compensator" },
-	{ "COMPONENT_AT_MRFL_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_MRFL_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_SR_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_BP_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_BP_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_SC_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_SC_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_AR_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_SB_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_CR_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_MG_BARREL_01", "Barrel Attachment 1" },
-	{ "COMPONENT_AT_MG_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_CR_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_SR_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_SB_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_AR_BARREL_02", "Barrel Attachment 2" },
-	{ "COMPONENT_AT_MUZZLE_01", "Muzzle Attachment 1" },
-	{ "COMPONENT_AT_MUZZLE_02", "Muzzle Attachment 2" },
-	{ "COMPONENT_AT_MUZZLE_03", "Muzzle Attachment 3" },
-	{ "COMPONENT_AT_MUZZLE_04", "Muzzle Attachment 4" },
-	{ "COMPONENT_AT_MUZZLE_05", "Muzzle Attachment 5" },
-	{ "COMPONENT_AT_MUZZLE_06", "Muzzle Attachment 6" },
-	{ "COMPONENT_AT_MUZZLE_07", "Muzzle Attachment 7" },
+	{ "COMPONENT_AT_PI_COMP", "Compensator",'150' },
+	{ "COMPONENT_AT_PI_COMP_02", "Compensator",'150' },
+	{ "COMPONENT_AT_PI_COMP_03", "Compensator",'150' },
+	{ "COMPONENT_AT_MRFL_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_MRFL_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_SR_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_BP_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_BP_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_SC_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_SC_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_AR_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_SB_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_CR_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_MG_BARREL_01", "Barrel Attachment 1", '60' },
+	{ "COMPONENT_AT_MG_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_CR_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_SR_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_SB_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_AR_BARREL_02", "Barrel Attachment 2", '60' },
+	{ "COMPONENT_AT_MUZZLE_01", "Muzzle Attachment 1", '90' },
+	{ "COMPONENT_AT_MUZZLE_02", "Muzzle Attachment 2", '90' },
+	{ "COMPONENT_AT_MUZZLE_03", "Muzzle Attachment 3", '90' },
+	{ "COMPONENT_AT_MUZZLE_04", "Muzzle Attachment 4", '90' },
+	{ "COMPONENT_AT_MUZZLE_05", "Muzzle Attachment 5", '90' },
+	{ "COMPONENT_AT_MUZZLE_06", "Muzzle Attachment 6", '90' },
+	{ "COMPONENT_AT_MUZZLE_07", "Muzzle Attachment 7", '90' },
 
-	{ "COMPONENT_AT_AR_AFGRIP", "Grip" },
-	{ "COMPONENT_AT_AR_AFGRIP_02", "Grip" },
+	{ "COMPONENT_AT_AR_AFGRIP", "Grip", '100' },
+	{ "COMPONENT_AT_AR_AFGRIP_02", "Grip", '100' },
 
-	{ "COMPONENT_AT_PI_RAIL", "Holographic Sight" },
-	{ "COMPONENT_AT_SCOPE_MACRO_MK2", "Holographic Sight" },
-	{ "COMPONENT_AT_PI_RAIL_02", "Holographic Sight" },
-	{ "COMPONENT_AT_SIGHTS_SMG", "Holographic Sight" },
-	{ "COMPONENT_AT_SIGHTS", "Holographic Sight" },
+	{ "COMPONENT_AT_PI_RAIL", "Holographic Sight", '120' },
+	{ "COMPONENT_AT_SCOPE_MACRO_MK2", "Holographic Sight", '120' },
+	{ "COMPONENT_AT_PI_RAIL_02", "Holographic Sight", '120' },
+	{ "COMPONENT_AT_SIGHTS_SMG", "Holographic Sight", '120' },
+	{ "COMPONENT_AT_SIGHTS", "Holographic Sight", '120' },
 
-	{ "COMPONENT_AT_SCOPE_SMALL", "Scope Small" },
-	{ "COMPONENT_AT_SCOPE_SMALL_02", "Scope Small" },
+	{ "COMPONENT_AT_SCOPE_SMALL", "Scope Small", '200' },
+	{ "COMPONENT_AT_SCOPE_SMALL_02", "Scope Small", '200' },
 
-	{ "COMPONENT_AT_SCOPE_MACRO_02", "Scope" },
-	{ "COMPONENT_AT_SCOPE_SMALL_02", "Scope" },
-	{ "COMPONENT_AT_SCOPE_MACRO", "Scope" },
-	{ "COMPONENT_AT_SCOPE_MEDIUM", "Scope" },
-	{ "COMPONENT_AT_SCOPE_LARGE", "Scope" },
-	{ "COMPONENT_AT_SCOPE_SMALL", "Scope" },
+	{ "COMPONENT_AT_SCOPE_MACRO_02", "Scope",'200' },
+	{ "COMPONENT_AT_SCOPE_SMALL_02", "Scope",'200' },
+	{ "COMPONENT_AT_SCOPE_MACRO", "Scope",'200' },
+	{ "COMPONENT_AT_SCOPE_MEDIUM", "Scope",'200' },
+	{ "COMPONENT_AT_SCOPE_LARGE", "Scope",'200' },
+	{ "COMPONENT_AT_SCOPE_SMALL", "Scope",'200' },
 
-	{ "COMPONENT_AT_SCOPE_MACRO_02_SMG_MK2", "2x Scope" },
-	{ "COMPONENT_AT_SCOPE_SMALL_MK2", "2x Scope" },
+	{ "COMPONENT_AT_SCOPE_MACRO_02_SMG_MK2", "2x Scope",'250' },
+	{ "COMPONENT_AT_SCOPE_SMALL_MK2", "2x Scope",'250' },
 
-	{ "COMPONENT_AT_SCOPE_SMALL_SMG_MK2", "4x Scope" },
-	{ "COMPONENT_AT_SCOPE_MEDIUM_MK2", "4x Scope" },
+	{ "COMPONENT_AT_SCOPE_SMALL_SMG_MK2", "4x Scope",'350' },
+	{ "COMPONENT_AT_SCOPE_MEDIUM_MK2", "4x Scope",'350' },
 
-	{ "COMPONENT_AT_SCOPE_MAX", "Advanced Scope" },
-	{ "COMPONENT_AT_SCOPE_LARGE", "Scope Large" },
-	{ "COMPONENT_AT_SCOPE_LARGE_FIXED_ZOOM_MK2", "Scope Large" },
-	{ "COMPONENT_AT_SCOPE_LARGE_MK2", "8x Scope" },
+	{ "COMPONENT_AT_SCOPE_MAX", "Advanced Scope",'550' },
+	{ "COMPONENT_AT_SCOPE_LARGE", "Scope Large",'250' },
+	{ "COMPONENT_AT_SCOPE_LARGE_FIXED_ZOOM_MK2", "Scope Large",'250' },
+	{ "COMPONENT_AT_SCOPE_LARGE_MK2", "8x Scope",'600' },
 
-	{ "COMPONENT_AT_SCOPE_NV", "Nightvision Scope" },
-	{ "COMPONENT_AT_SCOPE_THERMAL", "Thermal Scope" },
+	{ "COMPONENT_AT_SCOPE_NV", "Nightvision Scope",'350' },
+	{ "COMPONENT_AT_SCOPE_THERMAL", "Thermal Scope",'450' },
 
 	--{ "COMPONENT_KNUCKLE_VARMOD_PLAYER", "Default Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_LOVE", "Love Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_DOLLAR", "Dollar Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_VAGOS", "Vagos Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_HATE", "Hate Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_DIAMOND", "Diamond Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_PIMP", "Pimp Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_KING", "King Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_BALLAS", "Ballas Skin" },
-	{ "COMPONENT_KNUCKLE_VARMOD_BASE", "Base Skin" },
-	{ "COMPONENT_SWITCHBLADE_VARMOD_VAR1", "Default Skin" },
-	{ "COMPONENT_SWITCHBLADE_VARMOD_VAR2", "Variant 2 Skin" },
+	{ "COMPONENT_KNUCKLE_VARMOD_LOVE", "Love Skin",'150' },
+	{ "COMPONENT_KNUCKLE_VARMOD_DOLLAR", "Dollar Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_VAGOS", "Vagos Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_HATE", "Hate Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_DIAMOND", "Diamond Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_PIMP", "Pimp Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_KING", "King Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_BALLAS", "Ballas Skin",'150'  },
+	{ "COMPONENT_KNUCKLE_VARMOD_BASE", "Base Skin",'150'  },
+	{ "COMPONENT_SWITCHBLADE_VARMOD_VAR1", "Default Skin",'150'  },
+	{ "COMPONENT_SWITCHBLADE_VARMOD_VAR2", "Variant 2 Skin",'150' },
 	--{ "COMPONENT_SWITCHBLADE_VARMOD_BASE", "Base Skin" },
 
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_10", "Camo 10" },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_10", "Camo 10",'150'  },
 	{ "COMPONENT_MARKSMANRIFLERIFLE_MK2_CAMO_IND_01", "American Camo" },
 
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_IND_01", "American Camo" },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_BULLPUPRIFLE_MK2_CAMO_IND_01", "American Camo",'150'  },
 
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_IND_01", "American Camo" },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_PUMPSHOTGUN_MK2_CAMO_IND_01", "American Camo",'150' },
 
-	{ "COMPONENT_REVOLVER_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_REVOLVER_MK2_CAMO_IND_01", "American Camo" },
+	{ "COMPONENT_REVOLVER_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_REVOLVER_MK2_CAMO_IND_01", "American Camo",'150'  },
 
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_IND_01", "American Camo" },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_SPECIALCARBINE_MK2_CAMO_IND_01", "American Camo",'150'  },
 
-	{ "COMPONENT_PISTOL_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_SMG_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO", "Camo 1" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_SMG_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_02", "Camo 2" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_SMG_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_03", "Camo 3" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_SMG_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_04", "Camo 4" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_SMG_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_05", "Camo 5" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_SMG_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_06", "Camo 6" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_SMG_MK2_CAMO_07", "Camo 7" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_SMG_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_08", "Camo 8" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_SMG_MK2_CAMO_09", "Camo 9" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_10", "Camo 10" },
+	{ "COMPONENT_PISTOL_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO", "Camo 1",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_02", "Camo 2",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_03", "Camo 3",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_04", "Camo 4",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_05", "Camo 5",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_06", "Camo 6",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_07", "Camo 7",'150' },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_07", "Camo 7",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_08", "Camo 8",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_09", "Camo 9",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_10", "Camo 10",'150'  },
 	{ "COMPONENT_SNSPISTOL_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_SMG_MK2_CAMO_10", "Camo 10" },
-	{ "COMPONENT_PISTOL_MK2_CAMO_IND_01", "American Camo" },
-	{ "COMPONENT_SMG_MK2_CAMO_IND_01", "American Camo" },
-	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01", "American Camo" },
-	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_IND_01", "American Camo" },
-	{ "COMPONENT_COMBATMG_MK2_CAMO_IND_01", "American Camo" },
-	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01", "American Camo" },
-	{ "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01", "American Camo" },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_10", "Camo 10",'150'  },
+	{ "COMPONENT_PISTOL_MK2_CAMO_IND_01", "American Camo",'150'  },
+	{ "COMPONENT_SMG_MK2_CAMO_IND_01", "American Camo",'150'  },
+	{ "COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01", "American Camo",'150'  },
+	{ "COMPONENT_CARBINERIFLE_MK2_CAMO_IND_01", "American Camo",'150'  },
+	{ "COMPONENT_COMBATMG_MK2_CAMO_IND_01", "American Camo",'150'  },
+	{ "COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01", "American Camo",'150'  },
+	{ "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01", "American Camo",'150'  },
 }
 local globalTintTable = {
 	mk1 = {
-		{ 1, "Green Tint" },
-		{ 2, "Gold Tint" },
-		{ 3, "Pink Tint" },
-		{ 4, "Army Tint" },
-		{ 5, "LSPD Tint" },
-		{ 6, "Orange Tint" },
-		{ 7, "Platinum Tint" },
+		{ 1, "Green Tint", '150' },
+		{ 2, "Gold Tint", '150' },
+		{ 3, "Pink Tint", '150' },
+		{ 4, "Army Tint", '150' },
+		{ 5, "LSPD Tint", '150' },
+		{ 6, "Orange Tint", '150' },
+		{ 7, "Platinum Tint", '150' },
 	},
 	mk2 = {
-		{ 1, "Classic Gray Tint" },
-		{ 2, "Classic TwoTone Tint" },
-		{ 3, "Classic White Tint" },
-		{ 4, "Classic Beige Tint" },
-		{ 5, "Classic Green Tint" },
-		{ 6, "Classic Blue Tint" },
-		{ 7, "Classic Earth Tint" },
-		{ 8, "Classic Brown And Black Tint" },
-		{ 9, "Red Contrast Tint" },
-		{ 10, "Blue Contrast Tint" },
-		{ 11, "Yellow Contrast Tint" },
-		{ 12, "Orange Contrast Tint" },
-		{ 13, "Bold Pink Tint" },
-		{ 14, "Bold Purple And Yellow Tint" },
-		{ 15, "Bold Orange Tint" },
-		{ 16, "Bold Green And Purple Tint" },
-		{ 17, "Bold Red Features Tint" },
-		{ 18, "Bold Green Features Tint" },
-		{ 19, "Bold Cyan Features Tint" },
-		{ 20, "Bold Yellow Features Tint" },
-		{ 21, "Bold Red And White Tint" },
-		{ 22, "Bold Blue And White Tint" },
-		{ 23, "Metallic Gold Tint" },
-		{ 24, "Metallic Platinum Tint" },
-		{ 25, "Metallic Gray And Lilac Tint" },
-		{ 26, "Metallic Purple And Lime Tint" },
-		{ 27, "Metallic Red Tint" },
-		{ 28, "Metallic Green Tint" },
-		{ 29, "Metallic Blue Tint" },
-		{ 30, "Metallic White And Aqua Tint" },
-		{ 31, "Metallic Red And Yellow" },
+		{ 1, "Classic Gray Tint", '150' },
+		{ 2, "Classic TwoTone Tint", '150' },
+		{ 3, "Classic White Tint", '150' },
+		{ 4, "Classic Beige Tint", '150' },
+		{ 5, "Classic Green Tint", '150' },
+		{ 6, "Classic Blue Tint", '150' },
+		{ 7, "Classic Earth Tint", '150' },
+		{ 8, "Classic Brown And Black Tint", '150' },
+		{ 9, "Red Contrast Tint", '150' },
+		{ 10, "Blue Contrast Tint", '150' },
+		{ 11, "Yellow Contrast Tint", '150' },
+		{ 12, "Orange Contrast Tint", '150' },
+		{ 13, "Bold Pink Tint", '150' },
+		{ 14, "Bold Purple And Yellow Tint", '150' },
+		{ 15, "Bold Orange Tint", '150' },
+		{ 16, "Bold Green And Purple Tint", '150' },
+		{ 17, "Bold Red Features Tint", '150' },
+		{ 18, "Bold Green Features Tint", '150' },
+		{ 19, "Bold Cyan Features Tint", '150' },
+		{ 20, "Bold Yellow Features Tint", '150' },
+		{ 21, "Bold Red And White Tint", '150' },
+		{ 22, "Bold Blue And White Tint", '150' },
+		{ 23, "Metallic Gold Tint", '150' },
+		{ 24, "Metallic Platinum Tint", '150' },
+		{ 25, "Metallic Gray And Lilac Tint", '150' },
+		{ 26, "Metallic Purple And Lime Tint", '150' },
+		{ 27, "Metallic Red Tint", '150' },
+		{ 28, "Metallic Green Tint", '150' },
+		{ 29, "Metallic Blue Tint", '150' },
+		{ 30, "Metallic White And Aqua Tint", '150' },
+		{ 31, "Metallic Red And Yellow", '150' },
 	}
 }
 for ci,wepTable in pairs(globalWeaponTable) do
@@ -557,15 +586,17 @@ for ci,wepTable in pairs(globalWeaponTable) do
     }
     local classWepTable = xnWeapons.weaponClasses[ci].weapons
 	for wi,weaponObject in ipairs(wepTable) do
-		if weaponObject[3] then
+		if weaponObject[4] then
 			classWepTable[wi] = weaponObject[3]
 			classWepTable[wi].name = weaponObject[2]
 			classWepTable[wi].model = weaponObject[1]
+			classWepTable[wi].price= weaponObject[4]
 			classWepTable[wi].attachments = {}
 		else
 			classWepTable[wi] = {
 				name = weaponObject[2],
 				model = weaponObject[1],
+				price = weaponObject[3],
 				attachments = {},
 			}
 		end
@@ -574,7 +605,8 @@ for ci,wepTable in pairs(globalWeaponTable) do
             if DoesWeaponTakeWeaponComponent(weaponObject[1], attachmentObject[1]) then
                 wep.attachments[#wep.attachments+1] = {
                     name = attachmentObject[2],
-                    model = attachmentObject[1]
+                    model = attachmentObject[1],
+					price = attachmentObject[3]
                 }
             end
         end
@@ -898,25 +930,25 @@ Citizen.CreateThread(function()
 				for i,class in ipairs(xnWeapons.weaponClasses) do
 					JayMenu.MenuButton(class.name, "xnw_"..class.name)
 				end
-				if JayMenu.Button("Max All Ammo Types") then
-					for i,class in ipairs(xnWeapons.weaponClasses) do
-						for i,weapon in ipairs(class.weapons) do
-							if DoesPlayerOwnWeapon(weapon.model) then
-								GiveMaxAmmo(weapon.model)
-							end
-						end
-					end
-				end
-				if JayMenu.Button("Get All Weapons") then
-					for i,class in ipairs(xnWeapons.weaponClasses) do
-						for i,weapon in ipairs(class.weapons) do
-							if not DoesPlayerOwnWeapon(weapon.model) then
-								GiveWeapon(weapon.model, 0)
-								GiveMaxAmmo(weapon.model)
-							end
-						end
-					end
-				end
+				--if JayMenu.Button("Max All Ammo Types") then
+					--for i,class in ipairs(xnWeapons.weaponClasses) do
+						--for i,weapon in ipairs(class.weapons) do
+							--if DoesPlayerOwnWeapon(weapon.model) then
+							--	GiveMaxAmmo(weapon.model)
+							--end
+						--end
+					--end
+				--end
+				--if JayMenu.Button("Get All Weapons") then
+					--for i,class in ipairs(xnWeapons.weaponClasses) do
+						--for i,weapon in ipairs(class.weapons) do
+							--if not DoesPlayerOwnWeapon(weapon.model) then
+								--GiveWeapon(weapon.model, 0)
+								--GiveMaxAmmo(weapon.model)
+							--end
+						--end
+					--end
+				--end
 				JayMenu.MenuButton("~r~Remove All Weapons", "xnweapons_removeall_confirm")
 				JayMenu.Display()
 			elseif JayMenu.IsMenuOpened('xnweapons_removeall_confirm') then
@@ -947,17 +979,28 @@ Citizen.CreateThread(function()
 								SetTempWeapon(weapon)
 							end
 						else
-							local clicked, hovered = JayMenu.Button(weapon.name, "FREE")
+							local clicked, hovered = JayMenu.Button(weapon.name, weapon.price)
 							if clicked then
+							ESX.TriggerServerCallback('xnweapons:getPlayerMoney',function(PlayerMoney) 
+							local PlayerMoneyInt = tonumber(PlayerMoney)
+							local weppriceInt = tonumber(weapon.price)
+							if PlayerMoneyInt >= weppriceInt then
+							TriggerServerEvent('xnweapons:buyItem', weapon.name, weapon.price)
 								GiveWeapon(weapon.model, weapon.clipSize*3)
 								SetCurrentPedWeapon(GetPlayerPed(-1), weapon.model, true)
 								CreateFakeWeaponObject(weapon)
 								JayMenu.SwitchMenu("xnw_"..class.name.."_"..weapon.model)
+								else 
+								ESX.ShowNotification('Not Enough Money', false, false, 'r')
+								end
+								end)
+								
 							elseif hovered then
 								SetTempWeapon(weapon)
 							end
 						end
 					end
+			
 					JayMenu.Display()
 				end
 				for i,weapon in ipairs(class.weapons) do
@@ -967,11 +1010,33 @@ Citizen.CreateThread(function()
 							JayMenu.SwitchMenu("xnw_"..class.name)
 						end
 						if not weapon.noAmmo then
-							if JayMenu.Button(weapon.clipSize.."x Rounds", "FREE") then
+							if JayMenu.Button(weapon.clipSize.."x Rounds", weapon.clipSize * 2) then
+							ESX.TriggerServerCallback('xnweapons:getPlayerMoney',function(PlayerMoney) 
+							local PlayerMoneyInt = tonumber(PlayerMoney)
+							local totalRoundsPrice = weapon.clipSize * 2	
+							local roundsInt = tonumber(totalRoundsPrice)
+							if PlayerMoneyInt >= roundsInt then
+							TriggerServerEvent('xnweapons:buyItem', 'Ammo', roundsInt)
 								GiveAmmo(weapon.model, weapon.clipSize)
+								else 
+								ESX.ShowNotification('Not Enough Money', false, false, 'r')
+								end
+								end)
 							end
-							if JayMenu.Button("Fill Ammo", "FREE") then
+							if JayMenu.Button("Max Ammo", weapon.clipSize *9999 ) then
+							local MaxAmmoInt = tonumber(weapon.clipSize *9999)
+							ESX.TriggerServerCallback('xnweapons:getPlayerMoney',function(PlayerMoney) 
+							local PlayerMoneyInt = tonumber(PlayerMoney)
+							if PlayerMoneyInt >= 19998 then
+							TriggerServerEvent('xnweapons:buyItem', 'Max Ammo ', '19998')
 								GiveMaxAmmo(weapon.model)
+								else 
+								ESX.ShowNotification('Not Enough Money', false, false, 'r')
+								end
+								end)
+							
+							
+								
 							end
 						end
 						for i,attachment in ipairs(weapon.attachments) do			
@@ -983,9 +1048,19 @@ Citizen.CreateThread(function()
 									SetTempWeaponConfig(weapon, false, false)
 								end
 							else
-								local clicked, hovered = JayMenu.SpriteButton(attachment.name, "commonmenu", "shop_tick_icon")
+								--local clicked, hovered = JayMenu.SpriteButton(attachment.name, "commonmenu", "shop_tick_icon")
+								local clicked, hovered = JayMenu.Button(attachment.name, attachment.price)
 								if clicked then
+								ESX.TriggerServerCallback('xnweapons:getPlayerMoney',function(PlayerMoney)
+								local PlayerMoneyInt = tonumber(PlayerMoney)
+								local AttachmentPriceInt = tonumber(attachment.price)
+								if PlayerMoneyInt >= AttachmentPriceInt then
+								TriggerServerEvent('xnweapons:buyItem', attachment.name, attachment.price)
 									GiveComponent(weapon.model, attachment.model, weapon)
+									else
+									ESX.ShowNotification('Not Enough Money', false, false, '~r~')
+									end
+									end)
 								elseif hovered then
 									SetTempWeaponConfig(weapon, attachment.model, false)
 								end
@@ -1001,9 +1076,19 @@ Citizen.CreateThread(function()
 										SetTempWeaponConfig(weapon, false, tint[1])
 									end
 								else
-									local clicked, hovered = JayMenu.SpriteButton(tint[2], "commonmenu", "shop_tick_icon")
+									--local clicked, hovered = JayMenu.SpriteButton(tint[2], "commonmenu", "shop_tick_icon")
+									local clicked, hovered = JayMenu.Button(tint[2], tint[3])
 									if clicked then
+									ESX.TriggerServerCallback('xnweapons:getPlayerMoney',function(PlayerMoney)
+								local PlayerMoneyInt = tonumber(PlayerMoney)
+								local TintPriceInt = tonumber(tint[3])
+								if PlayerMoneyInt >= TintPriceInt then
+								TriggerServerEvent('xnweapons:buyItem', tint[2], TintPriceInt)
 										SetPlayerWeaponTint(weapon.model, tint[1], weapon)
+										else
+										ESX.ShowNotification('Not Enough Money', false, false, '~r~')
+									end
+									end)
 									elseif hovered then
 										SetTempWeaponConfig(weapon, false, tint[1])
 									end
